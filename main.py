@@ -1,4 +1,5 @@
 import requests
+from send_email import send_email
 
 url=('https://newsapi.org/v2/'
      'top-headlines?sources=techcrunch&'
@@ -11,9 +12,20 @@ request = requests.get(url)
 content = request.json()
 
 # access article title and description
+body = ""
 for article in content['articles']:
-    print(article['title'])
-    print(article['description'])
+    if article['title'] is not None: # in case one of the title has none type sometime it does
+        body = body + article['title'] + '\n' + article['description'] +2*'\n'
+
+subject = 'Daily Tech Digestion'
+
+body = body.encode('utf-8')
+
+
+send_email(body)
+
+
+
 
 
 
